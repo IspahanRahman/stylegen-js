@@ -1,11 +1,11 @@
-export function formatCurrency(amount){
+export function formatCurrency(amount) {
   return new Intl.NumberFormat("en-US", {
     style: "currency",
     currency: "USD",
   }).format(amount);
 }
 
-export function formatDate(date){
+export function formatDate(date) {
   return new Intl.DateTimeFormat("en-US", {
     year: "numeric",
     month: "long",
@@ -13,10 +13,7 @@ export function formatDate(date){
   }).format(new Date(date));
 }
 
-export function calculateDiscount(
-  originalPrice,
-  discountPercent,
-){
+export function calculateDiscount(originalPrice, discountPercent) {
   return originalPrice - (originalPrice * discountPercent) / 100;
 }
 

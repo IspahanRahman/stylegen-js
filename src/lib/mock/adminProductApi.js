@@ -1,55 +1,8 @@
-const delay = (ms: number = 800) => new Promise((resolve) => setTimeout(resolve, ms));
-
-// ============ SHARED TYPES ============
-export interface ProductFormData {
-  name: string;
-  price: string;
-  discount?: string;
-  category: string;
-  stock: string;
-  description: string;
-  sizes?: string;
-}
-
-export interface ProductDetails {
-  id: string;
-  name: string;
-  price: string;
-  discount: string;
-  category: string;
-  stock: string;
-  description: string;
-  sizes: string;
-  images: string[];
-  status: 'active' | 'draft' | 'inactive';
-  featured: boolean;
-  seoTitle: string;
-  metaDescription: string;
-  tags: string;
-  rating?: number;
-  reviews?: number;
-  sales?: number;
-  createdAt: string;
-  updatedAt: string;
-}
-
-export interface ProductListItem {
-  id: string;
-  name: string;
-  price: number;
-  discount: number;
-  category: string;
-  stock: number;
-  status: 'active' | 'draft' | 'inactive' | 'out_of_stock';
-  rating: number;
-  sales: number;
-  images: string[];
-  createdAt: string;
-}
+const delay = (ms = 800) => new Promise((resolve) => setTimeout(resolve, ms));
 
 // ============ MOCK DATA ============
-const mockProducts: Record<string, ProductDetails> = {
-  '1': {
+const mockProducts = {
+  1: {
     id: '1',
     name: 'Italian Leather Weekend Bag',
     price: '299.99',
@@ -74,7 +27,7 @@ const mockProducts: Record<string, ProductDetails> = {
     createdAt: '2024-01-15',
     updatedAt: '2024-03-20',
   },
-  '2': {
+  2: {
     id: '2',
     name: 'Classic Leather Oxford Shoes',
     price: '189.99',
@@ -98,7 +51,7 @@ const mockProducts: Record<string, ProductDetails> = {
 };
 
 // Product list for table view
-const mockProductList: ProductListItem[] = [
+const mockProductList = [
   {
     id: '1',
     name: 'Italian Leather Weekend Bag',
@@ -170,15 +123,7 @@ const mockProductList: ProductListItem[] = [
 
 // Product List Operations
 export const adminProductListAPI = {
-  getAll: async (filters?: {
-    search?: string;
-    category?: string;
-    status?: string;
-  }): Promise<{
-    success: boolean;
-    products: ProductListItem[];
-    total: number;
-  }> => {
+  getAll: async (filters) => {
     await delay(800);
 
     let filtered = [...mockProductList];
@@ -205,7 +150,7 @@ export const adminProductListAPI = {
     };
   },
 
-  delete: async (id: string): Promise<{ success: boolean }> => {
+  delete: async (id) => {
     await delay(600);
     const index = mockProductList.findIndex((p) => p.id === id);
     if (index !== -1) {
@@ -214,7 +159,7 @@ export const adminProductListAPI = {
     return { success: true };
   },
 
-  bulkDelete: async (ids: string[]): Promise<{ success: boolean }> => {
+  bulkDelete: async (ids) => {
     await delay(800);
     ids.forEach((id) => {
       const index = mockProductList.findIndex((p) => p.id === id);
@@ -223,19 +168,16 @@ export const adminProductListAPI = {
     return { success: true };
   },
 
-  bulkUpdateStatus: async (ids: string[], status: string): Promise<{ success: boolean }> => {
+  bulkUpdateStatus: async (ids, status) => {
     await delay(800);
     ids.forEach((id) => {
       const product = mockProductList.find((p) => p.id === id);
-      if (product) product.status = status as ProductListItem['status'];
+      if (product) product.status = status;
     });
     return { success: true };
   },
 
-  getCategories: async (): Promise<{
-    success: boolean;
-    categories: string[];
-  }> => {
+  getCategories: async () => {
     await delay(400);
     const categories = [...new Set(mockProductList.map((p) => p.category))];
     return { success: true, categories };
@@ -244,7 +186,7 @@ export const adminProductListAPI = {
 
 // Product CRUD Operations (Single product)
 export const adminProductCRUDAPI = {
-  getById: async (id: string): Promise<{ success: boolean; product: ProductDetails }> => {
+  getById: async (id) => {
     await delay(600);
 
     const product = mockProducts[id];
@@ -275,16 +217,10 @@ export const adminProductCRUDAPI = {
     return { success: true, product };
   },
 
-  create: async (
-    data: ProductFormData,
-    images: string[]
-  ): Promise<{
-    success: boolean;
-    product: ProductDetails;
-  }> => {
+  create: async (data, images) => {
     await delay(1500);
 
-    const newProduct: ProductDetails = {
+    const newProduct = {
       id: `PROD-${Date.now()}`,
       ...data,
       discount: data.discount ?? '0',
@@ -312,7 +248,7 @@ export const adminProductCRUDAPI = {
       discount: parseFloat(newProduct.discount || '0'),
       category: newProduct.category,
       stock: parseInt(newProduct.stock || '0'),
-      status: newProduct.status as ProductListItem['status'],
+      status: newProduct.status,
       rating: newProduct.rating || 0,
       sales: newProduct.sales || 0,
       images: newProduct.images,
@@ -322,14 +258,7 @@ export const adminProductCRUDAPI = {
     return { success: true, product: newProduct };
   },
 
-  update: async (
-    id: string,
-    data: ProductFormData,
-    images: string[]
-  ): Promise<{
-    success: boolean;
-    product: ProductDetails;
-  }> => {
+  update: async (id, data, images) => {
     await delay(1500);
 
     const existing = mockProducts[id];
@@ -342,7 +271,7 @@ export const adminProductCRUDAPI = {
           )
         : existing.images;
 
-    const updated: ProductDetails = {
+    const updated = {
       ...existing,
       ...data,
       discount: data.discount ?? existing.discount,
@@ -363,7 +292,7 @@ export const adminProductCRUDAPI = {
         discount: parseFloat(updated.discount || '0'),
         category: updated.category,
         stock: parseInt(updated.stock || '0'),
-        status: updated.status as ProductListItem['status'],
+        status: updated.status,
         images: updated.images,
       };
     }
@@ -371,7 +300,7 @@ export const adminProductCRUDAPI = {
     return { success: true, product: updated };
   },
 
-  delete: async (id: string): Promise<{ success: boolean }> => {
+  delete: async (id) => {
     await delay(600);
     delete mockProducts[id];
     // Also remove from list view
@@ -380,18 +309,13 @@ export const adminProductCRUDAPI = {
     return { success: true };
   },
 
-  uploadImages: async (
-    files: File[]
-  ): Promise<{
-    success: boolean;
-    urls: string[];
-  }> => {
+  uploadImages: async (files) => {
     await delay(1000);
 
     // If running in the browser, convert files to data URLs so previews render immediately.
     try {
-      const readFileAsDataUrl = (file: File) =>
-        new Promise<string>((resolve, reject) => {
+      const readFileAsDataUrl = (file) =>
+        new Promise((resolve, reject) => {
           const reader = new FileReader();
           reader.onload = () => resolve(String(reader.result));
           reader.onerror = () => reject(new Error('Failed to read file'));
@@ -407,15 +331,10 @@ export const adminProductCRUDAPI = {
     }
   },
 
-  validateData: async (
-    data: ProductFormData
-  ): Promise<{
-    success: boolean;
-    errors?: Record<string, string>;
-  }> => {
+  validateData: async (data) => {
     await delay(300);
 
-    const errors: Record<string, string> = {};
+    const errors = {};
 
     if (!data.name || data.name.length < 2) {
       errors.name = 'Product name must be at least 2 characters';
@@ -446,7 +365,7 @@ export const adminProductCRUDAPI = {
 
 // Product Details Operations (for single product view)
 export const adminProductDetailsAPI = {
-  getById: async (id: string): Promise<{ success: boolean; product: ProductDetails }> => {
+  getById: async (id) => {
     await delay(600);
 
     const product = mockProducts[id];
@@ -482,31 +401,14 @@ export const adminProductDetailsAPI = {
   },
 
   // Add mock product details with extended info
-  getDetails: async (
-    id: string
-  ): Promise<{
-    success: boolean;
-    product: ProductDetails & {
-      views: number;
-      features: string[];
-      specifications: Record<string, string>;
-      salesHistory: Array<{ month: string; sales: number; revenue: number }>;
-      recentOrders: Array<{
-        id: string;
-        customer: string;
-        date: string;
-        quantity: number;
-        total: number;
-      }>;
-    };
-  }> => {
+  getDetails: async (id) => {
     await delay(700);
 
     const product = mockProducts[id];
 
     // If product isn't present in the detailed mock map, return a sensible default
     const base = product
-      ? { ...product }
+      ? product
       : {
           id,
           name: 'Product Name',
@@ -532,7 +434,7 @@ export const adminProductDetailsAPI = {
     return {
       success: true,
       product: {
-        ...(base as ProductDetails),
+        ...base,
         views: 2345,
         features: [
           'Full-grain Italian leather',

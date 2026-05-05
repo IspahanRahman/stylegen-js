@@ -1,64 +1,8 @@
-const delay = (ms: number = 800) =>
+const delay = (ms = 800) =>
   new Promise((resolve) => setTimeout(resolve, ms));
 
-export interface OrderItem {
-  id: string;
-  name: string;
-  price: number;
-  quantity: number;
-  size: string | null;
-  image: string;
-  discount: number;
-}
 
-export interface OrderCustomer {
-  name: string;
-  email: string;
-  phone?: string;
-  totalOrders?: number;
-}
-
-export interface ShippingAddress {
-  street: string;
-  apartment?: string;
-  city: string;
-  state: string;
-  zipCode: string;
-  country: string;
-}
-
-export interface TimelineEvent {
-  status: string;
-  date: string | null;
-  icon: string;
-  completed: boolean;
-}
-
-export interface Order {
-  id: string;
-  customer: OrderCustomer;
-  items: { name: string; quantity: number }[];
-  total: number;
-  status: "pending" | "processing" | "shipped" | "delivered" | "cancelled";
-  payment: string;
-  date?: string;
-  shipping: string | number;
-}
-
-export interface OrderDetails extends Order {
-  paymentMethod: string;
-  subtotal: number;
-  shipping: number;
-  tax: number;
-  discount: number;
-  createdAt: string;
-  updatedAt: string;
-  shippingAddress: ShippingAddress;
-  items: OrderItem[];
-  timeline: TimelineEvent[];
-}
-
-const mockOrders: Order[] = [
+const mockOrders = [
   {
     id: "ORD-001",
     customer: { name: "John Doe", email: "john@example.com" },
@@ -114,7 +58,7 @@ const mockOrders: Order[] = [
   },
 ];
 
-const mockOrderDetails: Record<string, OrderDetails> = {
+const mockOrderDetails = {
   "ORD-001": {
     id: "ORD-001",
     status: "processing",
@@ -193,7 +137,7 @@ const mockOrderDetails: Record<string, OrderDetails> = {
 };
 
 export const adminOrderAPI = {
-  getAll: async (): Promise<{ success: boolean; orders: Order[] }> => {
+  getAll: async () => {
     await delay(800);
     return {
       success: true,
@@ -202,8 +146,8 @@ export const adminOrderAPI = {
   },
 
   getById: async (
-    id: string,
-  ): Promise<{ success: boolean; order: OrderDetails }> => {
+    id,
+  ) => {
     await delay(600);
 
     const order = mockOrderDetails[id];
@@ -212,7 +156,7 @@ export const adminOrderAPI = {
       const basicOrder = mockOrders.find((o) => o.id === id);
       if (!basicOrder) throw new Error("Order not found");
 
-      const defaultOrder: OrderDetails = {
+      const defaultOrder = {
         ...basicOrder,
         paymentMethod: "Credit Card",
         subtotal: basicOrder.total,
@@ -273,9 +217,9 @@ export const adminOrderAPI = {
   },
 
   updateStatus: async (
-    id: string,
-    status: string,
-  ): Promise<{ success: boolean }> => {
+    id,
+    status,
+  ) => {
     await delay(500);
 
     const order = mockOrders.find((o) => o.id === id);
@@ -291,10 +235,7 @@ export const adminOrderAPI = {
     return { success: true };
   },
 
-  exportOrders: async (): Promise<{
-    success: boolean;
-    downloadUrl: string;
-  }> => {
+  exportOrders: async () => {
     await delay(1000);
 
     return {
@@ -303,23 +244,12 @@ export const adminOrderAPI = {
     };
   },
 
-  printInvoice: async (orderId: string): Promise<{ success: boolean }> => {
+  printInvoice: async (orderId) => {
     await delay(500);
     return { success: true };
   },
 
-  getStats: async (): Promise<{
-    success: boolean;
-    stats: {
-      total: number;
-      pending: number;
-      processing: number;
-      shipped: number;
-      delivered: number;
-      cancelled: number;
-      totalRevenue: number;
-    };
-  }> => {
+  getStats: async () => {
     await delay(400);
 
     return {

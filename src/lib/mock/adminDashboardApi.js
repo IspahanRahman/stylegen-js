@@ -1,54 +1,9 @@
-const delay = (ms: number = 800) =>
+const delay = (ms = 800) =>
   new Promise((resolve) => setTimeout(resolve, ms));
 
-// ============ DASHBOARD TYPES ============
-export interface DashboardStats {
-  totalProducts: number;
-  activeInventory: number;
-  lowStock: number;
-  totalOrders: number;
-  totalCustomers: number;
-  totalRevenue: number;
-  monthlyRevenue: number;
-  revenueGrowth: number;
-  ordersGrowth: number;
-  customersGrowth: number;
-}
-
-export interface RecentOrder {
-  id: string;
-  customer: string;
-  amount: number;
-  status: "pending" | "processing" | "shipped" | "delivered" | "cancelled";
-  date: string;
-}
-
-export interface LowStockProduct {
-  id: string;
-  name: string;
-  stock: number;
-  threshold: number;
-  image?: string;
-}
-
-export interface Activity {
-  id: number;
-  action: string;
-  description: string;
-  time: string;
-  type: "order" | "product" | "customer" | "system";
-}
-
-export interface DashboardData {
-  stats: DashboardStats;
-  recentOrders: RecentOrder[];
-  lowStockProducts: LowStockProduct[];
-  recentActivities: Activity[];
-  timestamp: string;
-}
 
 // ============ MOCK DATA ============
-const mockStats: DashboardStats = {
+const mockStats = {
   totalProducts: 156,
   activeInventory: 134,
   lowStock: 12,
@@ -61,7 +16,7 @@ const mockStats: DashboardStats = {
   customersGrowth: 15.2,
 };
 
-const mockRecentOrders: RecentOrder[] = [
+const mockRecentOrders = [
   {
     id: "ORD-001",
     customer: "John Doe",
@@ -113,7 +68,7 @@ const mockRecentOrders: RecentOrder[] = [
   },
 ];
 
-const mockLowStockProducts: LowStockProduct[] = [
+const mockLowStockProducts = [
   {
     id: "1",
     name: "Italian Leather Bag",
@@ -144,7 +99,7 @@ const mockLowStockProducts: LowStockProduct[] = [
   },
 ];
 
-const mockRecentActivities: Activity[] = [
+const mockRecentActivities = [
   {
     id: 1,
     action: "New order placed",
@@ -192,11 +147,9 @@ const mockRecentActivities: Activity[] = [
 // ============ API FUNCTIONS ============
 export const adminDashboardAPI = {
   getDashboardData: async (
-    timeRange: string = "7days",
-  ): Promise<{
-    success: boolean;
-    data: DashboardData;
-  }> => {
+    timeRange = "7days",
+  ) => {
+
     await delay(1000);
 
     // Simulate different data based on time range
@@ -241,10 +194,7 @@ export const adminDashboardAPI = {
     };
   },
 
-  getStatsSummary: async (): Promise<{
-    success: boolean;
-    stats: DashboardStats;
-  }> => {
+  getStatsSummary: async () => {
     await delay(500);
     return {
       success: true,
@@ -253,11 +203,8 @@ export const adminDashboardAPI = {
   },
 
   getRecentOrders: async (
-    limit: number = 5,
-  ): Promise<{
-    success: boolean;
-    orders: RecentOrder[];
-  }> => {
+    limit = 5,
+  ) => {
     await delay(600);
     return {
       success: true,
@@ -265,10 +212,7 @@ export const adminDashboardAPI = {
     };
   },
 
-  getLowStockProducts: async (): Promise<{
-    success: boolean;
-    products: LowStockProduct[];
-  }> => {
+  getLowStockProducts: async () => {
     await delay(500);
     return {
       success: true,
@@ -277,11 +221,8 @@ export const adminDashboardAPI = {
   },
 
   getRecentActivities: async (
-    limit: number = 6,
-  ): Promise<{
-    success: boolean;
-    activities: Activity[];
-  }> => {
+    limit = 6,
+  ) => {
     await delay(400);
     return {
       success: true,
@@ -290,11 +231,8 @@ export const adminDashboardAPI = {
   },
 
   exportReport: async (
-    timeRange: string,
-  ): Promise<{
-    success: boolean;
-    downloadUrl: string;
-  }> => {
+    timeRange = "7days",
+  ) => {
     await delay(1500);
     return {
       success: true,
