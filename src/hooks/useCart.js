@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 import { useRouter } from "next/navigation";
-import { useCartStore, type CartItem } from "@/lib/store/cartStore";
+import { useCartStore } from "@/lib/store/cartStore";
 import { useAuthStore } from "@/lib/store/authStore";
 import toast from "react-hot-toast";
 
@@ -10,8 +10,8 @@ export function useCart() {
   const { isAuthenticated } = useAuthStore();
 
   const addToCart = useCallback(
-    (product: any, quantity: number = 1, selectedSize?: string) => {
-      const cartItem: CartItem = {
+    (product, quantity = 1, selectedSize) => {
+      const cartItem = {
         productId: product.id,
         name: product.name,
         price:
@@ -47,7 +47,7 @@ export function useCart() {
   );
 
   const removeFromCart = useCallback(
-    (productId: string, size?: string) => {
+    (productId, size) => {
       cart.removeItem(productId, size);
       toast.success("Item removed from cart");
     },
@@ -55,7 +55,7 @@ export function useCart() {
   );
 
   const updateQuantity = useCallback(
-    (productId: string, quantity: number, stock: number, size?: string) => {
+    (productId, quantity, stock, size) => {
       if (quantity > stock) {
         toast.error(`Only ${stock} items available`);
         return;

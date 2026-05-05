@@ -1,7 +1,6 @@
 import { useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { useAdminProductFormStore } from "@/lib/store/adminProductStore";
-import type { ProductFormData } from "@/lib/mock/adminProductApi";
 import toast from "react-hot-toast";
 
 
@@ -72,7 +71,7 @@ export function useAdminProduct({ mode, productId }) {
           toast.success("Product updated successfully!");
           router.push(`/admin/products/${productId}`);
         }
-      } catch (error: any) {
+      } catch (error) {
         toast.error(error.message || "Failed to save product");
       }
     },

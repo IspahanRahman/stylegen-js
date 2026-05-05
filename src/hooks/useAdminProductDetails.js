@@ -3,7 +3,7 @@ import { useRouter } from "next/navigation";
 import { useAdminProductDetailsStore } from "@/lib/store/adminProductStore";
 import toast from "react-hot-toast";
 
-export function useAdminProductDetails(productId: string) {
+export function useAdminProductDetails(productId) {
   const store = useAdminProductDetailsStore();
   const router = useRouter();
 
@@ -24,13 +24,13 @@ export function useAdminProductDetails(productId: string) {
       await store.deleteProduct();
       toast.success("Product deleted successfully");
       router.push("/admin/products");
-    } catch (error: any) {
+    } catch (error) {
       toast.error(error.message || "Failed to delete product");
     }
   }, [store, router]);
 
   const handleImageNavigation = useCallback(
-    (direction: "prev" | "next") => {
+    (direction) => {
       const { product, selectedImageIndex } = store;
       if (!product) return;
 

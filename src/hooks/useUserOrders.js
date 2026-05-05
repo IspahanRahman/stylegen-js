@@ -15,7 +15,7 @@ export function useUserOrders() {
   }, [isAuthenticated]);
 
   const handleViewDetails = useCallback(
-    async (orderId: string) => {
+    async (orderId) => {
       await store.fetchOrderDetails(orderId);
       return store.selectedOrder;
     },
@@ -23,12 +23,12 @@ export function useUserOrders() {
   );
 
   const handleDownloadInvoice = useCallback(
-    async (orderId: string) => {
+    async (orderId) => {
       try {
         const downloadUrl = await store.downloadInvoice(orderId);
         window.open(downloadUrl, "_blank");
         toast.success("Invoice downloaded");
-      } catch (error: any) {
+      } catch (error) {
         toast.error(error.message || "Failed to download invoice");
       }
     },
@@ -36,14 +36,14 @@ export function useUserOrders() {
   );
 
   const handleSearch = useCallback(
-    (term: string) => {
+    (term) => {
       store.setSearchTerm(term);
     },
     [store],
   );
 
   const handleStatusFilter = useCallback(
-    (status: string) => {
+    (status) => {
       store.setStatusFilter(status);
     },
     [store],
@@ -68,7 +68,7 @@ export function useUserOrders() {
   };
 }
 
-export function useUserTrackOrder(orderId?: string) {
+export function useUserTrackOrder(orderId) {
   const store = useUserOrderStore();
 
   useEffect(() => {

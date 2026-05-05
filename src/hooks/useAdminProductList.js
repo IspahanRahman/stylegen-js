@@ -14,11 +14,11 @@ export function useAdminProductList() {
   }, []);
 
   const handleDelete = useCallback(
-    async (id: string) => {
+    async (id) => {
       try {
         await store.deleteProduct(id);
         toast.success("Product deleted successfully");
-      } catch (error: any) {
+      } catch (error) {
         toast.error(error.message || "Failed to delete product");
       }
     },
@@ -29,17 +29,17 @@ export function useAdminProductList() {
     try {
       await store.bulkDelete();
       toast.success("Selected products deleted successfully");
-    } catch (error: any) {
+    } catch (error) {
       toast.error(error.message || "Failed to delete products");
     }
   }, [store]);
 
   const handleBulkStatusUpdate = useCallback(
-    async (status: string) => {
+    async (status) => {
       try {
         await store.bulkUpdateStatus(status);
         toast.success(`Products marked as ${status}`);
-      } catch (error: any) {
+      } catch (error) {
         toast.error(error.message || "Failed to update products");
       }
     },
@@ -51,21 +51,21 @@ export function useAdminProductList() {
   }, [router]);
 
   const handleNavigateToEdit = useCallback(
-    (id: string) => {
+    (id) => {
       router.push(`/admin/products/${id}/edit`);
     },
     [router],
   );
 
   const handleNavigateToDetails = useCallback(
-    (id: string) => {
+    (id) => {
       router.push(`/admin/products/${id}`);
     },
     [router],
   );
 
   const handleSelectAll = useCallback(
-    (checked: boolean) => {
+    (checked) => {
       if (checked) {
         store.selectAll();
       } else {
