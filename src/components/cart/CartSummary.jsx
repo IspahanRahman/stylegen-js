@@ -1,17 +1,6 @@
-import React from "react";
-import { ChevronRight, Shield, Truck, RefreshCw } from "lucide-react";
-import { formatCurrency } from "@/lib/utils/formatCurrency";
-
-type Props = {
-  subtotal: number;
-  discount: number;
-  total: number;
-  promoCode: string;
-  setPromoCode: (s: string) => void;
-  onApplyPromo: () => void;
-  onCheckout: () => void;
-  onClearCart: () => void;
-};
+import React from 'react';
+import { ChevronRight, Shield, Truck, RefreshCw } from 'lucide-react';
+import { formatCurrency } from '@/lib/utils/formatCurrency';
 
 export default function CartSummary({
   subtotal,
@@ -22,12 +11,10 @@ export default function CartSummary({
   onApplyPromo,
   onCheckout,
   onClearCart,
-}: Props) {
+}) {
   return (
     <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 sticky top-24">
-      <h2 className="text-lg font-semibold text-gray-900 mb-4">
-        Order Summary
-      </h2>
+      <h2 className="text-lg font-semibold text-gray-900 mb-4">Order Summary</h2>
 
       <div className="space-y-3 text-sm">
         <div className="flex justify-between">
@@ -36,9 +23,7 @@ export default function CartSummary({
         </div>
         <div className="flex justify-between">
           <span className="text-gray-600">Discount</span>
-          <span className="font-medium text-green-600">
-            -{formatCurrency(discount)}
-          </span>
+          <span className="font-medium text-green-600">-{formatCurrency(discount)}</span>
         </div>
         <div className="flex justify-between">
           <span className="text-gray-600">Shipping</span>
@@ -92,10 +77,7 @@ export default function CartSummary({
         </div>
       </div>
 
-      <button
-        onClick={onClearCart}
-        className="w-full mt-4 text-sm text-red-600 hover:text-red-700"
-      >
+      <button onClick={onClearCart} className="w-full mt-4 text-sm text-red-600 hover:text-red-700">
         Clear Cart
       </button>
     </div>
