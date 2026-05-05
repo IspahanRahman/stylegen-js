@@ -1,45 +1,12 @@
-const delay = (ms: number = 800) =>
+const delay = (ms = 800) =>
   new Promise((resolve) => setTimeout(resolve, ms));
 
-export interface UserOrderItem {
-  productId: string;
-  name: string;
-  quantity: number;
-  price: number;
-  size?: string;
-  image: string;
-}
 
-export interface UserOrder {
-  id: string;
-  userId: string;
-  items: UserOrderItem[];
-  totalPrice: number;
-  status: "pending" | "processing" | "shipped" | "delivered" | "cancelled";
-  shippingAddress: {
-    street: string;
-    city: string;
-    state: string;
-    zipCode: string;
-    country: string;
-    apartment?: string;
-  };
-  trackingNumber: string | null;
-  estimatedDelivery: string | null;
-  createdAt: string;
-  shippedAt: string | null;
-  deliveredAt: string | null;
-}
 
-export interface TrackingEvent {
-  status: string;
-  location: string;
-  timestamp: string;
-  completed: boolean;
-}
+
 
 // Mock user orders storage (shared across the app)
-const userOrders: UserOrder[] = [
+const userOrders = [
   {
     id: "order-1",
     userId: "user-1",
@@ -96,7 +63,7 @@ const userOrders: UserOrder[] = [
   },
 ];
 
-const mockTrackingHistory: TrackingEvent[] = [
+const mockTrackingHistory = [
   {
     status: "Package delivered",
     location: "New York, NY",
@@ -143,8 +110,8 @@ const mockTrackingHistory: TrackingEvent[] = [
 
 export const userOrderAPI = {
   getOrders: async (
-    userId: string,
-  ): Promise<{ success: boolean; orders: UserOrder[] }> => {
+    userId,
+  ) => {
     await delay(800);
 
     const orders = userOrders.filter((o) => o.userId === userId);
@@ -156,8 +123,8 @@ export const userOrderAPI = {
   },
 
   getOrderById: async (
-    orderId: string,
-  ): Promise<{ success: boolean; order: UserOrder }> => {
+    orderId,
+  ) => {
     await delay(600);
 
     const order = userOrders.find((o) => o.id === orderId);
@@ -167,19 +134,11 @@ export const userOrderAPI = {
   },
 
   createOrder: async (
-    orderData: Omit<
-      UserOrder,
-      | "id"
-      | "createdAt"
-      | "trackingNumber"
-      | "estimatedDelivery"
-      | "shippedAt"
-      | "deliveredAt"
-    >,
-  ): Promise<{ success: boolean; order: UserOrder }> => {
+    orderData
+   ) => {
     await delay(1200);
 
-    const newOrder: UserOrder = {
+    const newOrder = {
       ...orderData,
       id: `order-${Date.now()}`,
       trackingNumber:
@@ -202,19 +161,15 @@ export const userOrderAPI = {
   },
 
   getTrackingInfo: async (
-    orderId: string,
-  ): Promise<{
-    success: boolean;
-    tracking: TrackingEvent[];
-    currentStep: number;
-  }> => {
+    orderId,
+  ) => {
     await delay(700);
 
     const order = userOrders.find((o) => o.id === orderId);
     if (!order) throw new Error("Order not found");
 
     // Calculate current step based on order status
-    const statusStepMap: Record<string, number> = {
+    const statusStepMap = {
       pending: 1,
       processing: 2,
       shipped: 3,
@@ -232,8 +187,8 @@ export const userOrderAPI = {
   },
 
   downloadInvoice: async (
-    orderId: string,
-  ): Promise<{ success: boolean; downloadUrl: string }> => {
+    orderId,
+  ) => {
     await delay(500);
     return {
       success: true,

@@ -59,7 +59,7 @@ export default function CheckoutPage() {
           image: i.image || "/images/placeholder.png",
         })),
         totalPrice: getTotal(),
-        status: "pending" as const,
+        status: "pending",
         shippingAddress: {
           street: data.street,
           city: data.city,

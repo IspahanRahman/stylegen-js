@@ -1,63 +1,10 @@
 // Simulate network delay
-const delay = (ms: number = 800) =>
+const delay = (ms = 800) =>
   new Promise((resolve) => setTimeout(resolve, ms));
 
-// Analytics Types
-export interface AnalyticsData {
-  revenue: {
-    total: number;
-    growth: number;
-    monthly: number[];
-  };
-  orders: {
-    total: number;
-    growth: number;
-    monthly: number[];
-  };
-  customers: {
-    total: number;
-    growth: number;
-    monthly: number[];
-  };
-  topProducts: Array<{
-    name: string;
-    sales: number;
-    revenue: number;
-    image?: string;
-  }>;
-  topCategories: Array<{
-    name: string;
-    sales: number;
-    revenue: number;
-  }>;
-}
-
-// Product Types
-export interface ProductFormData {
-  name: string;
-  price: string;
-  discount: string;
-  category: string;
-  stock: string;
-  description: string;
-  sizes: string;
-}
-
-export interface ProductResponse {
-  success: boolean;
-  message: string;
-  product?: Product & {
-    id: string;
-    images: string[];
-    status: string;
-    createdAt: string;
-  };
-}
-
-interface Product extends ProductFormData {}
 
 // Mock Analytics Data
-const mockAnalyticsData: AnalyticsData = {
+const mockAnalyticsData = {
   revenue: {
     total: 456789,
     growth: 12.5,
@@ -93,12 +40,8 @@ const mockAnalyticsData: AnalyticsData = {
 // Analytics API
 export const adminAnalyticsAPI = {
   getAnalytics: async (
-    timeRange: string = "monthly",
-  ): Promise<{
-    success: boolean;
-    data: AnalyticsData;
-    timestamp: string;
-  }> => {
+    timeRange = "monthly",
+  ) => {
     await delay(1000);
 
     // Simulate different data based on time range
@@ -139,11 +82,8 @@ export const adminAnalyticsAPI = {
   },
 
   exportReport: async (
-    timeRange: string,
-  ): Promise<{
-    success: boolean;
-    downloadUrl: string;
-  }> => {
+    timeRange,
+   ) => {
     await delay(1500);
 
     return {
@@ -156,9 +96,9 @@ export const adminAnalyticsAPI = {
 // Product API
 export const adminProductAPI = {
   createProduct: async (
-    data: ProductFormData,
-    images: string[],
-  ): Promise<ProductResponse> => {
+    data,
+    images,
+   ) => {
     await delay(1500);
 
     // Simulate validation
@@ -180,10 +120,10 @@ export const adminProductAPI = {
   },
 
   updateProduct: async (
-    id: string,
-    data: ProductFormData,
-    images: string[],
-  ): Promise<ProductResponse> => {
+    id,
+    data,
+    images,
+  ) => {
     await delay(1500);
 
     return {
@@ -200,11 +140,8 @@ export const adminProductAPI = {
   },
 
   uploadImages: async (
-    files: File[],
-  ): Promise<{
-    success: boolean;
-    urls: string[];
-  }> => {
+    files,
+  ) => {
     await delay(1000);
 
     // In real app, upload to cloud storage
@@ -219,10 +156,7 @@ export const adminProductAPI = {
     };
   },
 
-  getCategories: async (): Promise<{
-    success: boolean;
-    categories: string[];
-  }> => {
+  getCategories: async () => {
     await delay(500);
 
     return {
@@ -232,14 +166,11 @@ export const adminProductAPI = {
   },
 
   validateProductData: async (
-    data: ProductFormData,
-  ): Promise<{
-    success: boolean;
-    errors?: Record<string, string>;
-  }> => {
+    data,
+  ) => {
     await delay(300);
 
-    const errors: Record<string, string> = {};
+    const errors = {};
 
     if (!data.name || data.name.length < 2) {
       errors.name = "Product name must be at least 2 characters";

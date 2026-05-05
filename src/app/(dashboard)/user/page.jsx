@@ -62,7 +62,7 @@ export default function UserDashboard() {
       shipped: "bg-purple-100 text-purple-700",
       cancelled: "bg-red-100 text-red-700",
     };
-    return colors[status as keyof typeof colors] || "bg-gray-100 text-gray-700";
+    return colors[status] || "bg-gray-100 text-gray-700";
   };
 
   // Loading State

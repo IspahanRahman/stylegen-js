@@ -49,8 +49,6 @@ const adminNavItems = [
 
 export default function AdminLayout({
   children,
-}: {
-  children: React.ReactNode;
 }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
